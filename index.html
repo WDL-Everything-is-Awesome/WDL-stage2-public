@@ -14752,9 +14752,76 @@ The goal of this challenge is to model, from the point of view of trends, which 
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>latest run: 2022-04-16 18:45:56.829554
+<pre>latest run: 2022-04-20 19:06:45.979612
 </pre>
 </div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;executive_summary.md&quot;</span><span class="p">))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output " data-mime-type="text/markdown">
+<h1 id="World-Data-League-2022">World Data League 2022<a class="anchor-link" href="#World-Data-League-2022">&#182;</a></h1><h2 id="%F0%9F%8E%AF-Challenge">&#127919; Challenge<a class="anchor-link" href="#%F0%9F%8E%AF-Challenge">&#182;</a></h2><p><em>Optimization of public transport routes during road interruptions</em></p>
+<h2 id="%F0%9F%91%A5-Authors">&#128101; Authors<a class="anchor-link" href="#%F0%9F%91%A5-Authors">&#182;</a></h2><ul>
+<li>Elena Viganò</li>
+<li>Emil Pedersen</li>
+<li>Filip Claesson</li>
+<li>Julian Jensen</li>
+<li>Robert Nyquist</li>
+</ul>
+<h2 id="%E2%9C%A8-Introduction-(250-words-max)">&#10024; Introduction (250 words max)<a class="anchor-link" href="#%E2%9C%A8-Introduction-(250-words-max)">&#182;</a></h2><p>Optimizing public transport is critical to maintain users trust and use of the system. In the words of Tupac Shakur:
+<code>The most expensive thing in the world is trust. It can take years to earn and just a matter of seconds to lose.</code>
+Our approach is to accurately estimate the delays, by advanced network analysis that both take into account the new routes during interruptions and the additional traffic caused by the rest of traffic being rerouted as well. 
+Secondary we evalute the actual time and experienced discomfort by the residents based on behavioual studies and as a function of number of busses.</p>
+<p>By using our data tools Cascais, would be able to effectively plan and excecute road maintenance, while perserving trust in the public transport system.</p>
+<h2 id="%F0%9F%94%A2-Data-(250-words-max)">&#128290; Data (250 words max)<a class="anchor-link" href="#%F0%9F%94%A2-Data-(250-words-max)">&#182;</a></h2><ul>
+<li>Road network from open streetmap</li>
+<li>List of planned roadblocks in Cascais</li>
+<li>Existing bus routes and time tables for Cascais</li>
+</ul>
+<h2 id="%F0%9F%A7%AE-Methods-and-Techniques-(250-words-max)">&#129518; Methods and Techniques (250 words max)<a class="anchor-link" href="#%F0%9F%A7%AE-Methods-and-Techniques-(250-words-max)">&#182;</a></h2><p>We mapped the roads and routes to graphs. Then used standard pathfinding and graph algorithms to recalculate newest shortest routes and estimate of loss of connectedness (as a measure for increased traffic that will slow traffic down on the alternative routes).</p>
+<p>Taking these factors into accounts into effect we found the average increase in wait time assuming same or different amount of busses. Through established research<a href="https://ojp-content.s3.us-east-2.amazonaws.com/NHI/Old/BaseImages/2014/04/d.pdf">1</a> <a href="https://transp-or.epfl.ch/heart/2020/abstracts/HEART_2020_paper_147.pdf">2</a> <a href="https://eprints.whiterose.ac.uk/2062/1/">3</a>, we translated this wait time to accumulated commuter dissatisfaction.</p>
+<h2 id="%F0%9F%92%A1-Main-Insights-(300-words-max)">&#128161; Main Insights (300 words max)<a class="anchor-link" href="#%F0%9F%92%A1-Main-Insights-(300-words-max)">&#182;</a></h2><h2 id="%F0%9F%9B%A0%EF%B8%8F-Product">&#128736;&#65039; Product<a class="anchor-link" href="#%F0%9F%9B%A0%EF%B8%8F-Product">&#182;</a></h2><p>Planning tool for the city of cascais to plan reroutes and additional capacity, to maintain trust in the public transport system</p>
+<h3 id="Definition">Definition<a class="anchor-link" href="#Definition">&#182;</a></h3><h3 id="Users">Users<a class="anchor-link" href="#Users">&#182;</a></h3><p>Cascais city planners, and bus companies.</p>
+<h3 id="Activities">Activities<a class="anchor-link" href="#Activities">&#182;</a></h3><ol>
+<li>The tool allows to plot reroutes and accurate delay information, by taking additional traffic preasure into account</li>
+<li>The tool allows to estimate discomfort as a function of additional capacity, and precence/absence of accurate information</li>
+</ol>
+<h3 id="Output">Output<a class="anchor-link" href="#Output">&#182;</a></h3><h2 id="%F0%9F%8C%8D-Social-Impact-Measurement">&#127757; Social Impact Measurement<a class="anchor-link" href="#%F0%9F%8C%8D-Social-Impact-Measurement">&#182;</a></h2><h3 id="Outcome">Outcome<a class="anchor-link" href="#Outcome">&#182;</a></h3><h3 id="Impact-Metrics">Impact Metrics<a class="anchor-link" href="#Impact-Metrics">&#182;</a></h3><h3 id="Impact-Measurement">Impact Measurement<a class="anchor-link" href="#Impact-Measurement">&#182;</a></h3>
+</div>
+
 </div>
 
 </div>
