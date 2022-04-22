@@ -3,7 +3,34 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>submission</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>submission</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script>
+(function() {
+  function addWidgetsRenderer() {
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var scriptElement = document.createElement('script');
+    
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        
+        var widgetRendererSrc = 'https://unpkg.com/@jupyter-js-widgets@*/dist/embed.js';
+        
+      }
+    } catch(e) {}
+
+    scriptElement.src = widgetRendererSrc;
+    document.body.appendChild(scriptElement);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
 
 
 
@@ -14624,10 +14651,94 @@ The goal of this challenge is to model, from the point of view of trends, which 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="%F0%9F%92%BB-Development">&#128187; Development<a class="anchor-link" href="#%F0%9F%92%BB-Development">&#182;</a></h2>
+<h3 id="TL;DR">TL;DR<a class="anchor-link" href="#TL;DR">&#182;</a></h3><p>see <a href="https://wdl-everything-is-awesome.github.io/WDL-stage2-public/">Notebook with all images/graphs</a></p>
+
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;executive_summary.md&quot;</span><span class="p">))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output " data-mime-type="text/markdown">
+<h1 id="World-Data-League-2022">World Data League 2022<a class="anchor-link" href="#World-Data-League-2022">&#182;</a></h1><h2 id="%F0%9F%8E%AF-Challenge">&#127919; Challenge<a class="anchor-link" href="#%F0%9F%8E%AF-Challenge">&#182;</a></h2><p><em>Optimization of public transport routes during road interruptions</em></p>
+<h2 id="%F0%9F%91%A5-Authors">&#128101; Authors<a class="anchor-link" href="#%F0%9F%91%A5-Authors">&#182;</a></h2><ul>
+<li>Elena Viganò</li>
+<li>Emil Pedersen</li>
+<li>Filip Claesson</li>
+<li>Julian Jensen </li>
+<li>Robert Nyquist</li>
+</ul>
+<h2 id="%E2%9C%A8-Introduction-(250-words-max)">&#10024; Introduction (250 words max)<a class="anchor-link" href="#%E2%9C%A8-Introduction-(250-words-max)">&#182;</a></h2><p>Optimizing public transport is critical to maintain users trust and use of the system. In the words of Tupac Shakur:
+<code>The most expensive thing in the world is trust. It can take years to earn and just a matter of seconds to lose.</code>
+Our approach is to accurately estimate the delays, by advanced network analysis that both take into account the new routes during interruptions and the additional traffic caused by the rest of traffic being rerouted as well. 
+Secondary we evalute the actual time and experienced discomfort by the residents based on behavioual studies and as a function of number of busses.</p>
+<p>By using our data tools Cascais, would be able to effectively plan and excecute road maintenance, while perserving trust in the public transport system.</p>
+<h2 id="%F0%9F%94%A2-Data-(250-words-max)">&#128290; Data (250 words max)<a class="anchor-link" href="#%F0%9F%94%A2-Data-(250-words-max)">&#182;</a></h2><ul>
+<li>Road network from open streetmap</li>
+<li>List of planned roadblocks in Cascais</li>
+<li>Existing bus routes and time tables for Cascais</li>
+</ul>
+<h2 id="%F0%9F%A7%AE-Methods-and-Techniques-(250-words-max)">&#129518; Methods and Techniques (250 words max)<a class="anchor-link" href="#%F0%9F%A7%AE-Methods-and-Techniques-(250-words-max)">&#182;</a></h2><p>We mapped the roads and routes to graphs. We matched the disruption data to the bus routes. In this way, we were able to surface the routes that are affected by the disruption and that eventually will be closed for traffic. We removed the route affected by the disruption and by using standard pathfinding and graph algorithms, we recalculated the new shortest routes and estimated the loss of connectedness (as a measure for increased traffic that will slow traffic down on the alternative routes). Taking these factors into account, we found the average increase in wait time assuming the same or different amount of busses.</p>
+<p>Taking these factors into accounts into effect we found the average increase in wait time assuming same or different amount of busses. Through established research<a href="https://ojp-content.s3.us-east-2.amazonaws.com/NHI/Old/BaseImages/2014/04/d.pdf">1</a>, <a href="https://transp-or.epfl.ch/heart/2020/abstracts/HEART_2020_paper_147.pdf">2</a>, <a href="https://eprints.whiterose.ac.uk/2062/1/">3</a>, we translated this wait time to accumulated commuter dissatisfaction.</p>
+<h2 id="%F0%9F%92%A1-Main-Insights-(300-words-max)">&#128161; Main Insights (300 words max)<a class="anchor-link" href="#%F0%9F%92%A1-Main-Insights-(300-words-max)">&#182;</a></h2><h2 id="--We-found-15-disruption-locations-matching-with-X-bus-routes.-">- We found 15 disruption locations matching with X bus routes. <a class="anchor-link" href="#--We-found-15-disruption-locations-matching-with-X-bus-routes.-">&#182;</a></h2><h2 id="%F0%9F%9B%A0%EF%B8%8F-Product">&#128736;&#65039; Product<a class="anchor-link" href="#%F0%9F%9B%A0%EF%B8%8F-Product">&#182;</a></h2><p>Planning tool for the city of cascais to plan reroutes and additional capacity, to maintain trust in the public transport system</p>
+<h3 id="Definition">Definition<a class="anchor-link" href="#Definition">&#182;</a></h3><p>Our product is data backed recommendations for the city of Cascais. We provide a model to identify possible reroutes, delays and concrete suggestions on what kind of measures the city should take to make the wait time more reasonable for Cascais public transport users in case of road disruptions.</p>
+<h3 id="Users">Users<a class="anchor-link" href="#Users">&#182;</a></h3><p>Cascais city planners, and bus companies.</p>
+<h3 id="Activities">Activities<a class="anchor-link" href="#Activities">&#182;</a></h3><ol>
+<li>The tool allows to plot reroutes and accurate delay information, by taking additional traffic preasure into account</li>
+<li>The tool allows to estimate discomfort as a function of additional capacity, and precence/absence of accurate information</li>
+</ol>
+<h3 id="Output">Output<a class="anchor-link" href="#Output">&#182;</a></h3><p>A report based on the insights analysis: See our presentation.</p>
+<h2 id="%F0%9F%8C%8D-Social-Impact-Measurement">&#127757; Social Impact Measurement<a class="anchor-link" href="#%F0%9F%8C%8D-Social-Impact-Measurement">&#182;</a></h2><h3 id="Outcome">Outcome<a class="anchor-link" href="#Outcome">&#182;</a></h3><ul>
+<li>Prediction of possible delay times for commuters due to change in bus routes caused by disruptions.</li>
+<li>Predition of commuter dissatisfaction.</li>
+<li>Possibility to take action and improve commuter mobile apps for the city of Cascais with the introduction of real time information around the roads affected by the disruption and the realistic waiting times.</li>
+<li>Reduction of commuters annoyance.</li>
+</ul>
+<h3 id="Impact-Metrics">Impact Metrics<a class="anchor-link" href="#Impact-Metrics">&#182;</a></h3><ul>
+<li>Wait time for users for public transport of Cascais (measured by taking into consideration increased time needed by the bus to follow a new route given that the primary one is closed)</li>
+<li>Accumulated commuter dissatisfaction</li>
+</ul>
+<h3 id="Impact-Measurement">Impact Measurement<a class="anchor-link" href="#Impact-Measurement">&#182;</a></h3><ul>
+<li>Based our model interpretation: We predict that disturbancies will increase wait time and commuter dissatisfaction</li>
+<li>Based on similar previous studies <a href="https://ojp-content.s3.us-east-2.amazonaws.com/NHI/Old/BaseImages/2014/04/d.pdf">1</a>: We think that improving the mobile app associated with public transport in Cascais to update commuters in real time with the correct estimation of the possible delay, riders won't perceive their wait time to be longer than their measured wait time. This would contribute to decreasing the dissatisfaction of the commuters. </li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -14635,8 +14746,7 @@ The goal of this challenge is to model, from the point of view of trends, which 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="TL;DR">TL;DR<a class="anchor-link" href="#TL;DR">&#182;</a></h3><p>see <a href="https://wdl-everything-is-awesome.github.io/WDL-stage2-public/">Notebook with all images/graphs</a></p>
-
+<h2 id="%F0%9F%92%BB-Development">&#128187; Development<a class="anchor-link" href="#%F0%9F%92%BB-Development">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -14656,7 +14766,7 @@ The goal of this challenge is to model, from the point of view of trends, which 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># To surpress warnings for prettier notebook run uncomment below</span>
@@ -14726,7 +14836,7 @@ The goal of this challenge is to model, from the point of view of trends, which 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
@@ -14752,7 +14862,7 @@ The goal of this challenge is to model, from the point of view of trends, which 
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>latest run: 2022-04-20 19:06:45.979612
+<pre>latest run: 2022-04-22 14:56:31.881727
 </pre>
 </div>
 </div>
@@ -14766,11 +14876,21 @@ The goal of this challenge is to model, from the point of view of trends, which 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;executive_summary.md&quot;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> widget
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">say_my_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print the current widget value in short sentence</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;My name is </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+     
+<span class="n">widgets</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">say_my_name</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Jim&quot;</span><span class="p">,</span> <span class="s2">&quot;Emma&quot;</span><span class="p">,</span> <span class="s2">&quot;Bond&quot;</span><span class="p">]);</span>
 </pre></div>
 
      </div>
@@ -14792,34 +14912,17 @@ The goal of this challenge is to model, from the point of view of trends, which 
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output " data-mime-type="text/markdown">
-<h1 id="World-Data-League-2022">World Data League 2022<a class="anchor-link" href="#World-Data-League-2022">&#182;</a></h1><h2 id="%F0%9F%8E%AF-Challenge">&#127919; Challenge<a class="anchor-link" href="#%F0%9F%8E%AF-Challenge">&#182;</a></h2><p><em>Optimization of public transport routes during road interruptions</em></p>
-<h2 id="%F0%9F%91%A5-Authors">&#128101; Authors<a class="anchor-link" href="#%F0%9F%91%A5-Authors">&#182;</a></h2><ul>
-<li>Elena Viganò</li>
-<li>Emil Pedersen</li>
-<li>Filip Claesson</li>
-<li>Julian Jensen</li>
-<li>Robert Nyquist</li>
-</ul>
-<h2 id="%E2%9C%A8-Introduction-(250-words-max)">&#10024; Introduction (250 words max)<a class="anchor-link" href="#%E2%9C%A8-Introduction-(250-words-max)">&#182;</a></h2><p>Optimizing public transport is critical to maintain users trust and use of the system. In the words of Tupac Shakur:
-<code>The most expensive thing in the world is trust. It can take years to earn and just a matter of seconds to lose.</code>
-Our approach is to accurately estimate the delays, by advanced network analysis that both take into account the new routes during interruptions and the additional traffic caused by the rest of traffic being rerouted as well. 
-Secondary we evalute the actual time and experienced discomfort by the residents based on behavioual studies and as a function of number of busses.</p>
-<p>By using our data tools Cascais, would be able to effectively plan and excecute road maintenance, while perserving trust in the public transport system.</p>
-<h2 id="%F0%9F%94%A2-Data-(250-words-max)">&#128290; Data (250 words max)<a class="anchor-link" href="#%F0%9F%94%A2-Data-(250-words-max)">&#182;</a></h2><ul>
-<li>Road network from open streetmap</li>
-<li>List of planned roadblocks in Cascais</li>
-<li>Existing bus routes and time tables for Cascais</li>
-</ul>
-<h2 id="%F0%9F%A7%AE-Methods-and-Techniques-(250-words-max)">&#129518; Methods and Techniques (250 words max)<a class="anchor-link" href="#%F0%9F%A7%AE-Methods-and-Techniques-(250-words-max)">&#182;</a></h2><p>We mapped the roads and routes to graphs. Then used standard pathfinding and graph algorithms to recalculate newest shortest routes and estimate of loss of connectedness (as a measure for increased traffic that will slow traffic down on the alternative routes).</p>
-<p>Taking these factors into accounts into effect we found the average increase in wait time assuming same or different amount of busses. Through established research<a href="https://ojp-content.s3.us-east-2.amazonaws.com/NHI/Old/BaseImages/2014/04/d.pdf">1</a> <a href="https://transp-or.epfl.ch/heart/2020/abstracts/HEART_2020_paper_147.pdf">2</a> <a href="https://eprints.whiterose.ac.uk/2062/1/">3</a>, we translated this wait time to accumulated commuter dissatisfaction.</p>
-<h2 id="%F0%9F%92%A1-Main-Insights-(300-words-max)">&#128161; Main Insights (300 words max)<a class="anchor-link" href="#%F0%9F%92%A1-Main-Insights-(300-words-max)">&#182;</a></h2><h2 id="%F0%9F%9B%A0%EF%B8%8F-Product">&#128736;&#65039; Product<a class="anchor-link" href="#%F0%9F%9B%A0%EF%B8%8F-Product">&#182;</a></h2><p>Planning tool for the city of cascais to plan reroutes and additional capacity, to maintain trust in the public transport system</p>
-<h3 id="Definition">Definition<a class="anchor-link" href="#Definition">&#182;</a></h3><h3 id="Users">Users<a class="anchor-link" href="#Users">&#182;</a></h3><p>Cascais city planners, and bus companies.</p>
-<h3 id="Activities">Activities<a class="anchor-link" href="#Activities">&#182;</a></h3><ol>
-<li>The tool allows to plot reroutes and accurate delay information, by taking additional traffic preasure into account</li>
-<li>The tool allows to estimate discomfort as a function of additional capacity, and precence/absence of accurate information</li>
-</ol>
-<h3 id="Output">Output<a class="anchor-link" href="#Output">&#182;</a></h3><h2 id="%F0%9F%8C%8D-Social-Impact-Measurement">&#127757; Social Impact Measurement<a class="anchor-link" href="#%F0%9F%8C%8D-Social-Impact-Measurement">&#182;</a></h2><h3 id="Outcome">Outcome<a class="anchor-link" href="#Outcome">&#182;</a></h3><h3 id="Impact-Metrics">Impact Metrics<a class="anchor-link" href="#Impact-Metrics">&#182;</a></h3><h3 id="Impact-Measurement">Impact Measurement<a class="anchor-link" href="#Impact-Measurement">&#182;</a></h3>
+
+
+
+
+<div id="bc72983e-c968-4868-a627-0811b3b11cb7" class="jupyter-widgets jp-OutputArea-output ">
+<script type="text/javascript">
+var element = document.getElementById('bc72983e-c968-4868-a627-0811b3b11cb7');
+</script>
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "c60311168b1c459485f198cd1c0b463e"}
+</script>
 </div>
 
 </div>
@@ -14835,6 +14938,10 @@ Secondary we evalute the actual time and experienced discomfort by the residents
 
 
 
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"cce985874cfc4b49bdf79cd0b910b973": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "c60311168b1c459485f198cd1c0b463e": {"model_name": "VBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_e56c119f537149859920ade471556625", "IPY_MODEL_9a27466d444741f4997a1c70e81f752e"], "layout": "IPY_MODEL_cce985874cfc4b49bdf79cd0b910b973"}}, "4641cb31f06e45f08723bea51d481c0c": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "c09112dbeb67482ebe8eb4a1d5a531ce": {"model_name": "DescriptionStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "e56c119f537149859920ade471556625": {"model_name": "DropdownModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DropdownModel", "_options_labels": ["Jim", "Emma", "Bond"], "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "DropdownView", "description": "name", "description_tooltip": null, "disabled": false, "index": 0, "layout": "IPY_MODEL_4641cb31f06e45f08723bea51d481c0c", "style": "IPY_MODEL_c09112dbeb67482ebe8eb4a1d5a531ce"}}, "c092ec3c6ec145dc8025ad00f8286ca5": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "9a27466d444741f4997a1c70e81f752e": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_c092ec3c6ec145dc8025ad00f8286ca5", "msg_id": "", "outputs": [{"output_type": "stream", "name": "stdout", "text": "My name is Jim\n"}]}}}, "version_major": 2, "version_minor": 0}
+</script>
 
 
 </html>
